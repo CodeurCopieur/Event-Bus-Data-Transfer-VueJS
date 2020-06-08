@@ -1,15 +1,27 @@
 <template>
   <form>
-    <input type="text" placeholder="Search">
-    <button type="submit" @click.prevent="">Search</button>
+    <input type="text" placeholder="Search" v-model="value" >
+    <button type="submit" @click.prevent="emitSearchValue">Search</button>
   </form>
 </template>
 
 <script>
 
-export default {
-  methods: {
+import { EventBus } from './../../main'
 
+export default {
+  data (){
+    return {
+      value: '',
+    }
+  },
+  methods: {
+    
+    emitSearchValue() {
+      EventBus.$emit('search', this.value)
+      console.log(this.value);
+
+    }
   }
 
 }
@@ -32,7 +44,7 @@ export default {
       transition: all 380ms ease-in-out;
 
       &:hover {
-        box-shadow: #3b49df 0px 1px 14px;
+        box-shadow: #3b49df 3px 3px 3px;
       }
     }
   }
