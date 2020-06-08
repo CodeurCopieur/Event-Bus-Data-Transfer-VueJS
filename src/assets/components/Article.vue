@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper__article">
-    <article v-for="(item, index) in teaser" :key="index">
+    <article v-for="(item, index) in filteredTeaser" :key="index">
       <div class="teaser">
         <h2>{{ item.title }} </h2>
         <p> {{ item.text }}</p>
@@ -11,9 +11,12 @@
 
 <script>
 
+import { EventBus } from './../../main'
+
 export default {
   data () {
     return {
+      searchVal: '',
       teaser: [
         {
           title: 'Event Bus Data Transfer VueJS',
@@ -41,6 +44,20 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    filteredTeaser() {
+      return this.teaser.filter( item => 
+        item.title.toLowerCase().includes(this.searchVal.toLowerCase())
+      )
+    }
+  },
+  created () {
+    EventBus.$on('search', (value)=> {
+      this.searchVal = value
+      console.log(this.searchVal = value);
+      
+    })
   }
 }
 </script>
@@ -48,8 +65,8 @@ export default {
 <style lang="scss" scoped>
 .wrapper__article {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   article{
     width: calc(100%/3);
     margin: 20px;
